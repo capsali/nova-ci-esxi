@@ -23,8 +23,9 @@ source $basedir/library.sh
 set -e
 
 ESXI_HOST=$NODE_NAME
-DEVSTACK_NAME="dvs-$ZUUL_PROJECT-$ZUUL_CHANGE-$ZUUL_PATCHSET"
-HV1_NAME="hv1-$ZUUL_PROJECT-$ZUUL_CHANGE-$ZUUL_PATCHSET"
+OPN_PROJECT=${ZUUL_PROJECT#*/}
+DEVSTACK_NAME="dvs-$OPN_PROJECT-$ZUUL_CHANGE-$ZUUL_PATCHSET"
+HV1_NAME="hv1-$OPN_PROJECT-$ZUUL_CHANGE-$ZUUL_PATCHSET"
 if [[ ! -z $IS_DEBUG_JOB ]] && [[ $IS_DEBUG_JOB == "yes" ]]; then
 	DEVSTACK_NAME="$DEVSTACK_NAME-dbg"
     HV1_NAME="$HV1_NAME-dbg"
@@ -234,13 +235,13 @@ done
 echo `date -u +%H:%M:%S` "Finished waiting for the parallel init jobs."
 echo `date -u +%H:%M:%S` "We looped $TIME_COUNT times, and when finishing we have $PROC_COUNT threads still active"
 
-OSTACK_PROJECT=`echo "$ZUUL_PROJECT" | cut -d/ -f2`
+#OSTACK_PROJECT=`echo "$ZUUL_PROJECT" | cut -d/ -f2`
 
 if [[ ! -z $IS_DEBUG_JOB ]] && [[ $IS_DEBUG_JOB == "yes" ]]
     then
-        echo "All build logs can be found in http://64.119.130.115/debug/$OSTACK_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
+        echo "All build logs can be found in http://64.119.130.115/debug/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
     else
-        echo "All build logs can be found in http://64.119.130.115/$OSTACK_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
+        echo "All build logs can be found in http://64.119.130.115/$OPN_PROJECT/$ZUUL_CHANGE/$ZUUL_PATCHSET/"
 fi
 
 if [[ $PROC_COUNT -gt 0 ]]; then
