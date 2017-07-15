@@ -18,18 +18,6 @@ sudo ifconfig eth1 promisc up
 
 firewall_manage_ports "" add disable ${TCP_PORTS[@]}
 
-# Add pip cache for devstack
-#mkdir -p $HOME/.pip
-#echo "[global]" > $HOME/.pip/pip.conf
-#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
-#echo "index-url = http://10.20.1.8:8080/cloudbase/CI/+simple/" >> $HOME/.pip/pip.conf
-#echo "[install]" >> $HOME/.pip/pip.conf
-#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
-
-#sudo mkdir -p /root/.pip
-#sudo cp $HOME/.pip/pip.conf /root/.pip/
-#sudo chown -R root:root /root/.pip
-
 # Update packages to latest version
 sudo pip install -U six
 sudo pip install -U kombu
@@ -54,10 +42,12 @@ then
         sed -i 's/^HOST_IP=.*/HOST_IP='$MYIP'/g' "$LOCALRC"
 fi
 
+##### Change it for final env #####
 #git config --global user.email hyper-v_ci@microsoft.com
 git config --global user.email m.capsali@gmail.com
 #git config --global user.name 'Hyper-V CI'
 git config --global user.name 'capsali'
+###################################
 cd $tests_dir
 
 set +e
@@ -102,9 +92,6 @@ else
 fi
 
 rotate_log $STACK_LOG $STACK_ROTATE_LIMIT
-
-#Do not fetch local get-pip.py
-#sed -i "s#PIP_GET_PIP_URL=https://bootstrap.pypa.io/get-pip.py#PIP_GET_PIP_URL=http://10.20.1.14:8080/get-pip.py#g" /home/ubuntu/devstack/tools/install_pip.sh
 
 #Requested by Claudiu Belu, temporary hack:
 sudo pip install -U /opt/stack/networking-hyperv
