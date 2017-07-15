@@ -1,8 +1,7 @@
 #!/bin/bash
 
 hyperv01=$1
-hyperv02=$2
-patch=$3
+patch=$2
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 . $DIR/config.sh
@@ -11,25 +10,25 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 set -x
 set -e
 sudo ifconfig eth1 promisc up
-sudo ip -f inet r replace default via 10.250.0.1 dev eth0
+#sudo ip -f inet r replace default via 10.250.0.1 dev eth0
 
-HOSTNAME=$(hostname)
+#HOSTNAME=$(hostname)
 
-sudo sed -i '2i127.0.0.1  '$HOSTNAME'' /etc/hosts
+#sudo sed -i '2i127.0.0.1  '$HOSTNAME'' /etc/hosts
 
 firewall_manage_ports "" add disable ${TCP_PORTS[@]}
 
 # Add pip cache for devstack
-mkdir -p $HOME/.pip
-echo "[global]" > $HOME/.pip/pip.conf
-echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
-echo "index-url = http://10.20.1.8:8080/cloudbase/CI/+simple/" >> $HOME/.pip/pip.conf
-echo "[install]" >> $HOME/.pip/pip.conf
-echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
+#mkdir -p $HOME/.pip
+#echo "[global]" > $HOME/.pip/pip.conf
+#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
+#echo "index-url = http://10.20.1.8:8080/cloudbase/CI/+simple/" >> $HOME/.pip/pip.conf
+#echo "[install]" >> $HOME/.pip/pip.conf
+#echo "trusted-host = 10.20.1.8" >> $HOME/.pip/pip.conf
 
-sudo mkdir -p /root/.pip
-sudo cp $HOME/.pip/pip.conf /root/.pip/
-sudo chown -R root:root /root/.pip
+#sudo mkdir -p /root/.pip
+#sudo cp $HOME/.pip/pip.conf /root/.pip/
+#sudo chown -R root:root /root/.pip
 
 # Update packages to latest version
 sudo pip install -U six
@@ -39,7 +38,7 @@ sudo pip install -U pbr
 # Clean devstack logs
 sudo rm -f "$DEVSTACK_LOGS/*"
 sudo rm -rf "$PBR_LOC"
-sudo sed -i  "$ a search openstack.tld" /etc/resolv.conf
+#sudo sed -i  "$ a search openstack.tld" /etc/resolv.conf
 
 MYIP=$(/sbin/ifconfig eth0 2>/dev/null| grep "inet addr:" 2>/dev/null| sed 's/.*inet addr://g;s/ .*//g' 2>/dev/null)
 
@@ -55,8 +54,10 @@ then
         sed -i 's/^HOST_IP=.*/HOST_IP='$MYIP'/g' "$LOCALRC"
 fi
 
-git config --global user.email hyper-v_ci@microsoft.com
-git config --global user.name 'Hyper-V CI'
+#git config --global user.email hyper-v_ci@microsoft.com
+git config --global user.email m.capsali@gmail.com
+#git config --global user.name 'Hyper-V CI'
+git config --global user.name 'capsali'
 cd $tests_dir
 
 set +e
@@ -114,7 +115,6 @@ wait $pid
 cat $STACK_LOG
 
 firewall_manage_ports $hyperv01 add enable ${TCP_PORTS[@]}
-firewall_manage_ports $hyperv02 add enable ${TCP_PORTS[@]}
 
 echo "Cleaning caches before starting tests; needed to avoid memory starvation"
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
