@@ -111,7 +111,7 @@ if ($hasBinDir -eq $false){
 }
 
 if (($hasMkisoFs -eq $false) -or ($hasQemuImg -eq $false)){
-    Invoke-WebRequest -Uri "http://81.181.181.155:8081/shared/kits/openstack_bin.zip" -OutFile "$bindir\openstack_bin.zip"
+    Invoke-WebRequest -UseBasicParsing -Uri "http://81.181.181.155:8081/shared/kits/openstack_bin.zip" -OutFile "$bindir\openstack_bin.zip"
     [System.IO.Compression.ZipFile]::ExtractToDirectory("$bindir\openstack_bin.zip", "$bindir")
     Remove-Item -Force "$bindir\openstack_bin.zip"
 }
@@ -166,7 +166,7 @@ if (Test-Path $pythonArchive)
 {
     Remove-Item -Force $pythonArchive
 }
-Invoke-WebRequest -Uri http://81.181.181.155:8081/shared/kits/python.zip -OutFile $pythonArchive
+Invoke-WebRequest -UseBasicParsing -Uri http://81.181.181.155:8081/shared/kits/python.zip -OutFile $pythonArchive
 if (Test-Path $pythonDir)
 {
     Cmd /C "rmdir /S /Q $pythonDir"

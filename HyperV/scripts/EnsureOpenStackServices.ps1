@@ -455,7 +455,7 @@ Function Check-Service
     {
         Try
         {
-            Invoke-WebRequest -Uri "$downloadLocation/$serviceFileName" -OutFile "$serviceFileLocation\$serviceFileName"
+            Invoke-WebRequest -UseBasicParsing -Uri "$downloadLocation/$serviceFileName" -OutFile "$serviceFileLocation\$serviceFileName"
         }
         Catch
         {
