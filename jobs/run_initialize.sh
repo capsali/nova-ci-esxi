@@ -83,15 +83,20 @@ while [ -z "$DEVSTACK_IP" ] || [ -z "$HV1_IP" ] || [ "$DEVSTACK_IP" == "unset" ]
     fi
 done
 
+echo "Devstack management IP is : $DEVSTACK_IP"
+echo "Hyper-V management IP is : $HV1_IP"
 
 echo "VMs details:"
-echo "------------"
+echo "------------------------------------------------------"
+echo "------------------------------------------------------"
 echo "DEVSTACK VM:"
 run_ssh_cmd_with_retry root@$ESXI_HOST $DEVSTACK_SSH_KEY "/vmfs/volumes/datastore1/get-vm-details.sh $DEVSTACK_NAME"
-echo "------------"
+echo "------------------------------------------------------"
+echo "------------------------------------------------------"
 echo "HYPER-V VM:"
 run_ssh_cmd_with_retry root@$ESXI_HOST $DEVSTACK_SSH_KEY "/vmfs/volumes/datastore1/get-vm-details.sh $HV1_NAME"
-echo "------------"
+echo "------------------------------------------------------"
+echo "------------------------------------------------------"
 
 sleep 60
 
