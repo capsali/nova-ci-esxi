@@ -16,7 +16,7 @@ sudo ifconfig eth1 promisc up
 
 #sudo sed -i '2i127.0.0.1  '$HOSTNAME'' /etc/hosts
 
-firewall_manage_ports "" add disable ${TCP_PORTS[@]}
+#firewall_manage_ports "" add disable ${TCP_PORTS[@]}
 
 # Update packages to latest version
 sudo pip install -U six
@@ -101,7 +101,7 @@ pid=$!
 wait $pid
 cat $STACK_LOG
 
-firewall_manage_ports $hyperv01 add enable ${TCP_PORTS[@]}
+#firewall_manage_ports $hyperv01 add enable ${TCP_PORTS[@]}
 
 echo "Cleaning caches before starting tests; needed to avoid memory starvation"
 sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'
