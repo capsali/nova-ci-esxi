@@ -261,11 +261,11 @@ fi
 post_build_restart_hyperv_services $HV1_IP $WIN_USER $WIN_PASS
 
 # Check for nova join (must equal 2)
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; NOVA_COUNT=$(nova service-list | grep nova-compute | grep -c -w up); if [ "$NOVA_COUNT" != 2 ];then nova service-list; exit 1;fi' 12
+run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; NOVA_COUNT=$(nova service-list | grep nova-compute | grep -c -w up); if [ "$NOVA_COUNT" != 1 ];then nova service-list; exit 1;fi' 12
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; nova service-list' 1
 
 # Check for neutron join (must equal 2)
-run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; NEUTRON_COUNT=$(neutron agent-list | grep -c "HyperV agent.*:-)"); if [ "$NEUTRON_COUNT" != 2 ];then neutron agent-list; exit 1;fi' 12
+run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; NEUTRON_COUNT=$(neutron agent-list | grep -c "HyperV agent.*:-)"); if [ "$NEUTRON_COUNT" != 1 ];then neutron agent-list; exit 1;fi' 12
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; neutron agent-list' 1
 
 # Call create_cell after init phase is done
