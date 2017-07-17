@@ -211,7 +211,7 @@ nohup $basedir/build_hyperv.sh $HV1_IP > /home/jenkins-slave/logs/hyperv-build-l
 pid_hv01=$!
 
 TIME_COUNT=0
-PROC_COUNT=3
+PROC_COUNT=2
 
 echo `date -u +%H:%M:%S` "Start waiting for parallel init jobs."
 
@@ -253,7 +253,7 @@ if [[ $PROC_COUNT -gt 0 ]]; then
 fi
 
 # HyperV post-build services restart
-post_build_restart_hyperv_services $hyperv01 $WIN_USER $WIN_PASS
+post_build_restart_hyperv_services $HV1_IP $WIN_USER $WIN_PASS
 
 # Check for nova join (must equal 2)
 run_ssh_cmd_with_retry ubuntu@$DEVSTACK_IP $DEVSTACK_SSH_KEY 'source /home/ubuntu/keystonerc; NOVA_COUNT=$(nova service-list | grep nova-compute | grep -c -w up); if [ "$NOVA_COUNT" != 2 ];then nova service-list; exit 1;fi' 12
