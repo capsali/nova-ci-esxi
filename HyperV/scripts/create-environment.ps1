@@ -18,6 +18,7 @@ $scriptLocation = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Def
 . "$scriptLocation\config.ps1"
 . "$scriptLocation\utils.ps1"
 
+$hasInstancesDir = Test-Path $instancesDir
 $hasProject = Test-Path $buildDir\$projectName
 $hasBuildDir = Test-Path $buildDir
 $hasNova = Test-Path $buildDir\nova
@@ -57,6 +58,9 @@ if ($hasConfigDir -eq $false) {
 }
 if ($hasBuildDir -eq $false){
    mkdir $buildDir
+}
+if ($hasInstancesDir -eq $false){
+   mkdir $instancesDir
 }
 if ($hasProject -eq $false){
     Get-ChildItem $buildDir
